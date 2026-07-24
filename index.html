@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAQR - Premium Edition</title>
+    <style>
+        /* --- الأساسيات والتنظيف --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; /* خط مستقبلي */
+        }
+
+        /* --- خلفية متحركة (Particles Effect) --- */
+        body {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px),
+                radial-gradient(rgba(229, 9, 20, 0.3), rgba(229, 9, 20, 0.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+            animation: backgroundMove 60s linear infinite;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden; /* لمنع ظهور شريط التمرير بسبب الأنميشن */
+        }
+
+        @keyframes backgroundMove {
+            from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px; }
+            to { background-position: 550px 550px, 390px 410px, 380px 820px, 220px 650px; }
+        }
+
+        /* --- الحاوية الرئيسية مع تأثير توهج --- */
+        .container {
+            background-color: rgba(20, 20, 20, 0.95); /* شبه شفاف لإظهار الخلفية */
+            border: 2px solid #e50914;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 0.5), inset 0 0 15px rgba(229, 9, 20, 0.2);
+            position: relative;
+            z-index: 10;
+            transition: opacity 0.5s ease, transform 0.5s ease; /* لأنميشن الانتقال */
+        }
+
+        /* --- أنميشن الظهور الناعم للصفحة --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #page1, #page2 {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* --- تأثيرات شعار الصقر (SAQR Logo) --- */
+        .logo-container {
+            margin-bottom: 15px;
+            perspective: 1000px; /* للـ 3D hover */
+        }
+
+        .logo-icon {
+            width: 110px;
+            height: 110px;
+            fill: #e50914;
+            /* تأثير النبض والتوهج الافتراضي */
+            filter: drop-shadow(0 0 12px rgba(229, 9, 20, 0.8));
+            animation: logoPulse 2s infinite alternate ease-in-out;
+            transition: transform 0.5s ease; /* للدوران التفاعلي */
+            cursor: pointer;
+        }
+
+        /* أنميشن النبض */
+        @keyframes logoPulse {
+            0% { filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.6)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 20px rgba(229, 9, 20, 1)); transform: scale(1.05); }
+        }
+
+        /* تأثير الدوران 3D عند تمرير الماوس */
+        .logo-container:hover .logo-icon {
+            transform: rotateY(15deg) rotateX(10deg) scale(1.1);
+        }
+
+        /* --- العنوان --- */
+        h1 {
+            color: #e50914;
+            font-size: 2.8rem;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.7);
+        }
+
+        /* --- مجموعة الأزرار --- */
+        .buttons-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* --- تأثيرات الأزرار (Buttons) --- */
+        .action-btn {
+            background: linear-gradient(45deg, #000000, #1a1a1a);
+            color: #ffffff;
+            border: 1px solid rgba(229, 9, 20, 0.5);
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden; /* لتأثير اللمعان الداخلي */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* انتقال سلس */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* تأثير التوهج النيون عند التمرير (Hover) */
+        .action-btn:hover:not(:disabled) {
+            border-color: #e50914;
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.8);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        /* تأثير اللمعان السريع الداخلي عند التمرير */
+        .action-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.7s ease;
+        }
+
+        .action-btn:hover::after {
+            left: 120%;
+        }
+
+        /* تأثير الضغط (Click Active) */
+        .action-btn:active:not(:disabled) {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+        }
+
+        .action-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background: #080808;
+            border-color: #333;
+        }
+
+        /* --- زر START مع أنميشن توهج خاص --- */
+        .start-btn {
+            background-color: #e50914;
+            color: #ffffff;
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            display: none; /* مخفي افتراضياً */
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.7);
+            transition: all 0.3s ease;
+            animation: startPulse 1.5s infinite; /* أنميشن جذب انتباه */
+        }
+
+        @keyframes startPulse {
+            0% { box-shadow: 0 0 15px rgba(229, 9, 20, 0.7); transform: scale(1); }
+            50% { box-shadow: 0 0 25px rgba(229, 9, 20, 1); transform: scale(1.02); }
+            100% { box-shadow: 0 0 15px rgba(229, 9, 20, 0.7); transform: scale(1); }
+        }
+
+        .start-btn:hover {
+            background-color: #ff1c27;
+            box-shadow: 0 0 30px rgba(229, 9, 20, 1);
+        }
+
+        /* --- واجهة الصفحة الثانية --- */
+        #page2 {
+            display: none; /* مخفية */
+        }
+
+        .page-title {
+            color: #ffffff;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+
+        .result-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* --- خانة الكود بتأثير النيون الأخضر --- */
+        .input-code {
+            background-color: #000000;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            padding: 16px;
+            font-size: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace; /* خط أكواد */
+            width: 100%;
+            outline: none;
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.3), 0 0 10px rgba(0, 255, 102, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .input-code:focus {
+            box-shadow: inset 0 0 15px rgba(0, 255, 102, 0.5), 0 0 20px rgba(0, 255, 102, 0.4);
+        }
+
+        /* --- زر النسخ --- */
+        .copy-btn {
+            background: linear-gradient(45deg, #e50914, #b20710);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(45deg, #ff1c27, #e50914);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.7);
+            transform: translateY(-1px);
+        }
+
+        /* خط خارجي للمظهر المستقبلي */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+    </style>
+</head>
+<body>
+
+    <!-- PAGE 1: Main Interface -->
+    <div id="page1" class="container">
+        <div class="logo-container">
+            <!-- الشعار مع تأثيرات الـ SVG والأنميشن -->
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <path d="M12,2C11.5,3.5 10,6 8,7C6,8 3,8.5 2,9C4,10.5 7,11 9,11C10,12 10.5,13.5 11,15C10,16 8.5,17.5 7,18C9,18.5 11.5,18 13,17C14,18 15,20 16,22C16.5,20 17,17.5 17,15C18.5,14 21,13 22,12C20,11.5 17.5,11.5 16,11C15.5,9.5 15,7 14,5C13.5,4 12.5,2.5 12,2Z"/>
+            </svg>
+        </div>
+
+        <h1>SAQR</h1>
+
+        <div class="buttons-group">
+            <button class="action-btn" onclick="startTimer(this)">Protocol 1</button>
+            <button class="action-btn" onclick="startTimer(this)">Protocol 2</button>
+            <button class="action-btn" onclick="startTimer(this)">Protocol 3</button>
+            <button class="action-btn" onclick="startTimer(this)">Protocol 4</button>
+            <button class="action-btn" onclick="startTimer(this)">Protocol 5</button>
+        </div>
+
+        <button id="startBtn" class="start-btn" onclick="goToPage2()">START</button>
+    </div>
+
+    <!-- PAGE 2: Code Result Interface -->
+    <div id="page2" class="container">
+        <div class="logo-container">
+            <svg class="logo-icon" viewBox="0 0 24 24">
+                <path d="M12,2C11.5,3.5 10,6 8,7C6,8 3,8.5 2,9C4,10.5 7,11 9,11C10,12 10.5,13.5 11,15C10,16 8.5,17.5 7,18C9,18.5 11.5,18 13,17C14,18 15,20 16,22C16.5,20 17,17.5 17,15C18.5,14 21,13 22,12C20,11.5 17.5,11.5 16,11C15.5,9.5 15,7 14,5C13.5,4 12.5,2.5 12,2Z"/>
+            </svg>
+        </div>
+
+        <h2 class="page-title">ACCESS CODE GENERATED</h2>
+
+        <div class="result-box">
+            <input type="text" id="secretInput" class="input-code" value="DOJEOFM$*$$*$@$#/*-S4992749 ,O" readonly>
+            <button class="copy-btn" onclick="copyText(this)">COPY TO CLIPBOARD</button>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+
+        function startTimer(clickedButton) {
+            // إضافة تأثير صوتي بسيط (اختياري، تم إيقافه لراحة المستخدم)
+            // new Audio('https://www.soundjay.com/buttons/button-16.mp3').play();
+
+            // إعادة تعيين الأزرار وإيقاف أي مؤقت سابق
+            clearInterval(countdownInterval);
+            const allButtons = document.querySelectorAll('.action-btn');
+            allButtons.forEach((btn, index) => {
+                btn.disabled = false;
+                btn.textContent = `Protocol ${index + 1}`;
+                btn.style.boxShadow = "0 2px 5px rgba(0,0,0,0.5)"; // إعادة الظل الطبيعي
+            });
+            document.getElementById('startBtn').style.display = 'none';
+
+            // تعطيل جميع الأزرار أثناء العد
+            allButtons.forEach(btn => btn.disabled = true);
+
+            // اختيار وقت عشوائي حتى 130 ثانية
+            let seconds = Math.floor(Math.random() * 130) + 1;
+            clickedButton.textContent = `${seconds}s`;
+            // إضافة توهج ثابت للزر النشط أثناء العد
+            clickedButton.style.boxShadow = "0 0 15px rgba(229, 9, 20, 0.5)";
+
+            countdownInterval = setInterval(() => {
+                seconds--;
+                clickedButton.textContent = `${seconds}s`;
+
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    clickedButton.textContent = "READY";
+                    clickedButton.style.background = "linear-gradient(45deg, #000, #004411)"; // تغيير اللون للأخضر عند الانتهاء
+                    clickedButton.style.borderColor = "#00ff66";
+                    clickedButton.style.boxShadow = "0 0 15px rgba(0, 255, 102, 0.5)";
+                    
+                    // إظهار زر START بأنميشن
+                    const startBtn = document.getElementById('startBtn');
+                    startBtn.style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function goToPage2() {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+
+            // أنميشن اختفاء الصفحة الأولى
+            page1.style.opacity = '0';
+            page1.style.transform = 'translateY(-20px)';
+
+            setTimeout(() => {
+                page1.style.display = 'none';
+                page2.style.display = 'block';
+                // أنميشن ظهور الصفحة الثانية يتم تلقائياً عبر الـ CSS المغذى بـ fadeIn
+            }, 500); // ينتظر انتهاء أنميشن الاختفاء
+        }
+
+        function copyText(buttonElement) {
+            const inputText = document.getElementById('secretInput');
+            inputText.select();
+            inputText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(inputText.value);
+            
+            // تغذية بصرية عند النسخ
+            buttonElement.textContent = "COPIED!";
+            buttonElement.style.background = "linear-gradient(45deg, #00ff66, #009944)";
+            buttonElement.style.color = "#000000";
+            buttonElement.style.boxShadow = "0 0 20px rgba(0, 255, 102, 0.8)";
+
+            setTimeout(() => {
+                buttonElement.textContent = "COPY TO CLIPBOARD";
+                buttonElement.style.background = "linear-gradient(45deg, #e50914, #b20710)";
+                buttonElement.style.color = "#ffffff";
+                buttonElement.style.boxShadow = "0 4px 6px rgba(0,0,0,0.3)";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
